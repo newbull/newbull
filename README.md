@@ -1,5 +1,15 @@
 ### Hi there 👋
 
+This is newbull github.
+
+You may switch the branch to 0.14.2 to git clone, and compile by yourself.
+
+The NewBull is git clone from bitcoin and dogecoin.
+
+This is a project to learn about blockchain and experiment with blockchain.
+
+The website is https://newbull.org
+
 <!--
 **newbull/newbull** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 

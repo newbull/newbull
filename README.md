@@ -1,20 +1,20 @@
 ![image](icon/icon-1024x1024-solid.png)
 ### Hi there 👋
 
-This is newbull github.
+This is newbull project.
 
-You may switch the branch to 0.14.2 to git clone, and compile by yourself.
+The NewBull's symbol is NB. The open source(MIT) decentralized cryptocurrency based on blockchain technology.
+
+You may switch the branche to 0.14.2 to git clone, and compile by yourself.
 
 The NewBull is git clone from bitcoin and dogecoin.
 
 This is a project to learn about blockchain and experiment with blockchain.
 
-If you want to download precompiled binaries and blockchain data, please visit the newbull offical website.
-
-The website is https://newbull.org
+If you want to download precompiled binaries and blockchain data, please visit the newbull offical website: https://newbull.org
 
 
-### The NewBull project is same as bitcoin project and/or dogecoin project, But with a little differents:
+### The NewBull project is same as bitcoin project and/or dogecoin project, But with a little differences:
 
 # 1. Total Amount
 
@@ -31,7 +31,7 @@ NewBull is 2,100,000,000,000, and unlimited additional currency
 50, and halve every 4 years
 
 ### Dogecoin: 
-The current block reward schedule:
+#### The current block reward schedule:
 
 1–99,999: 0–1,000,000 Dogecoin
 
@@ -49,7 +49,7 @@ The current block reward schedule:
 
 600,000+: 10,000 Dogecoin
 
-The original block reward schedule, with one-minute block targets and four-hour difficulty readjustment:
+#### The original block reward schedule, with one-minute block targets and four-hour difficulty readjustment:
 
 1–99,999: 0–1,000,000 Dogecoin
 
@@ -67,7 +67,7 @@ The original block reward schedule, with one-minute block targets and four-hour 
 
 ### NewBull:
 
-The current block reward schedule:
+#### The current block reward schedule:
 
 1:	      1,048,576,000       Genesis Block, height 0
 
@@ -113,7 +113,7 @@ The current block reward schedule:
 
 700800:	  1,000               and forever do this.
 
-The original block reward schedule:
+#### The original block reward schedule:
 
 I am sorry, I forgot it.
 
@@ -131,17 +131,22 @@ I am sorry, I have lost my old version source code, and I forgot the diffculty a
 
 I just remeber that I have tried "diff adjustment per block" and "diff addjustment every 14 days", and maybe switched between these scenarios several times.
 
+Finally, I have choosed the "diff addjustment every 14 days", I think this solution is more scientific.
+
+So, the -reindex can not be use. I will work on this in future.
+
 # Warning
 
-## 1. Qt Wallet Gui Deprecated
+## 1. Qt Wallet GUI Deprecated
 
-It's very powerful. But I developed a simple one instead.
+It's very powerful. But I developed a simple one(NewBull Wallet GUI) instead.
 
 ## 2. Corrupted Blockchain data file
 
 I don't know what caused the blockchain data file to be corrupted. But it is estimated that hundreds or thousands of blocks and rewards have been lost.
 
-So, the -reindex can not be use, and I developed a php version block parse tools to parse the transactions.
+So, the -reindex can not be use, and I developed a php version block parse tools to parse the transactions. I will work on this in future.
+
 <!--
 **newbull/newbull** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 

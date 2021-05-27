@@ -1,0 +1,1073 @@
+2021.5.26
+0.
+"C:\deps\newbull-0.14.2-github\latest\configure.ac"
+"C:\deps\newbull-0.14.2-github\latest\src\bitcoin-cli-res.rc"
+"C:\deps\newbull-0.14.2-github\latest\src\bitcoind-res.rc"
+"C:\deps\newbull-0.14.2-github\latest\src\bitcoin-tx-res.rc"
+修改bitcoin的各项名称信息，比如exe右键属性中的版本号和版权等
+1.
+"C:\deps\newbull-0.14.2-github\latest\src\bitcoin-cli.cpp"
+"C:\deps\newbull-0.14.2-github\latest\src\bitcoind.cpp"
+"C:\deps\newbull-0.14.2-github\latest\src\bitcoin-tx.cpp"
+"C:\deps\newbull-0.14.2-github\latest\src\httpserver.cpp"
+"C:\deps\newbull-0.14.2-github\latest\src\init.cpp"
+"C:\deps\newbull-0.14.2-github\latest\src\key.cpp"
+"C:\deps\newbull-0.14.2-github\latest\src\net.cpp"
+"C:\deps\newbull-0.14.2-github\latest\src\util.cpp"
+"C:\deps\newbull-0.14.2-github\latest\src\util.h"
+"C:\deps\newbull-0.14.2-github\latest\src\validation.cpp"
+"C:\deps\newbull-0.14.2-github\latest\src\rpc\blockchain.cpp"
+"C:\deps\newbull-0.14.2-github\latest\src\rpc\mining.cpp"
+"C:\deps\newbull-0.14.2-github\latest\src\rpc\misc.cpp"
+"C:\deps\newbull-0.14.2-github\latest\src\rpc\net.cpp"
+"C:\deps\newbull-0.14.2-github\latest\src\rpc\rawtransaction.cpp"
+"C:\deps\newbull-0.14.2-github\latest\src\rpc\server.cpp"
+"C:\deps\newbull-0.14.2-github\latest\src\wallet\rpcdump.cpp"
+"C:\deps\newbull-0.14.2-github\latest\src\wallet\rpcwallet.cpp"
+"C:\deps\newbull-0.14.2-github\latest\src\wallet\walletdb.cpp"
+将Bitcoin字样改为NewBull，将bitcoin字样改为newbull；
+3.
+"C:\deps\newbull-0.14.2-github\latest\src\amount.cpp"
+C:\deps\newbull-0.14.2-github\latest\src\validation.cpp
+C:\deps\newbull-0.14.2-github\latest\src\rpc\mining.cpp
+BTC单位改为NB；btc改为nb；
+4.
+"C:\deps\newbull-0.14.2-github\latest\src\chainparamsbase.cpp"
+"C:\deps\newbull-0.14.2-github\latest\src\rpc\net.cpp"
+"C:\deps\newbull-0.14.2-github\latest\src\rpc\server.cpp"
+测试网络rpc端口从18332改为10104，修改主网rpc端口从8332改为10102，node端口8333改为10101；
+
+
+2020.9.30 upgrade to 0.14.2
+0.
+"C:\deps\newbull-0.14.2-compile\go.sh"
+"C:\deps\newbull-0.14.2-compile\goonce.sh"
+echo "ver 2020.09.30"
+coinname="newbull"
+foldername="newbull-0.14.2"
+1.
+"C:\deps\newbull-0.14.2-github\latest\depends\packages\bdb.mk"
+"C:\deps\newbull-0.14.2-github\latest\depends\packages\boost.mk"
+"C:\deps\newbull-0.14.2-github\latest\depends\packages\libevent.mk"
+"C:\deps\newbull-0.14.2-github\latest\depends\packages\native_ccache.mk"
+更换里面的源为自己本地服务器托管的，否则要么下载太慢，要么压根下载不来；
+http://127.0.0.1/20161015/bitcoin_depends
+2.
+"C:\deps\newbull-0.14.2-github\latest\src\amount.h"
+static const CAmount MAX_MONEY = 2100000000000 * COIN;
+币总量从2100万改为2万1000亿；
+3.
+"C:\deps\newbull-0.14.2-github\latest\src\pow.cpp"
+unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader* pblock, const Consensus::Params& params)
+{
+    unsigned int nProofOfWorkLimit = UintToArith256(params.powLimit).GetCompact();
+
+    // Genesis block
+    if (pindexLast == NULL)
+        return nProofOfWorkLimit;
+
+    // Hard adjustment difficulty 2019-02-06
+    // try 0.11.2, 0.12.1, dose this fix crazy crash?
+    // Hard adjustment difficulty again 2020-03-28 How to fix the crazy crash???
+    // try 0.13.2, dose this fix crazy crash?
+    // yeah! 0.13.2 more better, may be 0.10.4 is very unstable.
+    // let us move on to next 0.14.2
+    if ((pindexLast->nHeight > 318095 && pindexLast->nHeight < 318099) ||
+        (pindexLast->nHeight == 320660)) {
+        // const CBlockIndex* pindexFirst = pindexLast;
+        // int64_t nActualTimespan = pindexLast->GetBlockTime() - pindexFirst->GetBlockTime();
+        // LogPrintf("  nActualTimespan = %d  before bounds\n", nActualTimespan);
+        // nActualTimespan = Params().TargetTimespan() / 4;
+        // Retarget
+        // uint256 bnNew;
+        // // uint256 bnNew2;
+        // uint256 bnOld;
+        // bnNew.SetCompact(pindexLast->nBits);
+        // bnOld = bnNew;
+        // // bnNew2 = bnNew;
+        // // bnNew *= nActualTimespan;
+        // // bnNew /= Params().TargetTimespan();
+        // bnNew /= 4; //nBits/4 means difficulty*4
+
+        // if (bnNew > Params().ProofOfWorkLimit())
+        //     bnNew = Params().ProofOfWorkLimit();
+
+        const arith_uint256 bnPowLimit = UintToArith256(params.powLimit);
+        arith_uint256 bnNew;
+        // arith_uint256 bnOld;
+        bnNew.SetCompact(pindexLast->nBits);
+        // bnOld = bnNew;
+        // bnNew *= nActualTimespan;
+        bnNew /= 4;
+
+        if (bnNew > bnPowLimit)
+            bnNew = bnPowLimit;
+
+        /// debug print
+        // LogPrintf("GetNextWorkRequired RETARGET\n");
+        // // LogPrintf("Params().TargetTimespan() = %d    nActualTimespan = %d\n", Params().TargetTimespan(), nActualTimespan);
+        // LogPrintf("Before: %08x  %s\n", pindexLast->nBits, bnOld.ToString());
+        // LogPrintf("After:  %08x  %s\n", bnNew.GetCompact(), bnNew.ToString());
+        // // LogPrintf("After2:  %08x  %s\n", bnNew2.GetCompact(), bnNew2.ToString());
+        // // LogPrintf("Params().ProofOfWorkLimit():  %08x  %s\n", Params().ProofOfWorkLimit().GetCompact(), Params().ProofOfWorkLimit().ToString());
+
+        return bnNew.GetCompact();
+    }
+
+    // Only change once per difficulty adjustment interval
+    if ((pindexLast->nHeight + 1) % params.DifficultyAdjustmentInterval() != 0) {
+        if (params.fPowAllowMinDifficultyBlocks) {
+            // Special difficulty rule for testnet:
+            // If the new block's timestamp is more than 2* 10 minutes
+            // then allow mining of a min-difficulty block.
+            if (pblock->GetBlockTime() > pindexLast->GetBlockTime() + params.nPowTargetSpacing * 2)
+                return nProofOfWorkLimit;
+            else {
+                // Return the last non-special-min-difficulty-rules-block
+                const CBlockIndex* pindex = pindexLast;
+                while (pindex->pprev && pindex->nHeight % params.DifficultyAdjustmentInterval() != 0 && pindex->nBits == nProofOfWorkLimit)
+                    pindex = pindex->pprev;
+                return pindex->nBits;
+            }
+        }
+        return pindexLast->nBits;
+    }
+
+    // Go back by what we want to be 14 days worth of blocks
+    int nHeightFirst = pindexLast->nHeight - (params.DifficultyAdjustmentInterval() - 1);
+    assert(nHeightFirst >= 0);
+    const CBlockIndex* pindexFirst = pindexLast->GetAncestor(nHeightFirst);
+    assert(pindexFirst);
+
+    return CalculateNextWorkRequired(pindexLast, pindexFirst->GetBlockTime(), params);
+}
+4.
+"C:\deps\newbull-0.14.2-github\latest\src\validation.cpp"
+CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
+{
+    int halvings = nHeight / consensusParams.nSubsidyHalvingInterval;
+    // Force block reward to zero when right shift is undefined.
+    if (halvings >= 64)
+        return 0;
+
+    // CAmount nSubsidy = 50 * COIN;
+    // Subsidy is cut in half every 210,000 blocks which will occur approximately every 4 years.
+    // nSubsidy >>= halvings;
+    // return nSubsidy;
+
+    CAmount nSubsidy = 1048576000 * COIN;
+    // int halvings = nHeight / Params().SubsidyHalvingInterval();
+
+    // Force block reward to zero when right shift is undefined.
+    // if (halvings >= 64)
+    //     return nFees;
+
+    // Subsidy is cut in half every 210,000 blocks which will occur approximately every 4 years.
+    // nSubsidy >>= halvings;
+
+    if (0 < nHeight && nHeight <= 2) {
+        //nMixedSubsidyHalvingInterval = 2;
+        //nSubsidy >>= 1;
+    }
+    if (2 < nHeight && nHeight <= 6) {
+        //nMixedSubsidyHalvingInterval = 4;
+        nSubsidy >>= 1;
+    }
+    if (6 < nHeight && nHeight <= 14) {
+        //nMixedSubsidyHalvingInterval = 8;
+        nSubsidy >>= 2;
+    }
+    if (14 < nHeight && nHeight <= 30) {
+        //nMixedSubsidyHalvingInterval = 16;
+        nSubsidy >>= 3;
+    }
+    if (30 < nHeight && nHeight <= 62) {
+        //nMixedSubsidyHalvingInterval = 32;
+        nSubsidy >>= 4;
+    }
+    if (62 < nHeight && nHeight <= 126) {
+        nSubsidy >>= 5;
+    }
+    if (126 < nHeight && nHeight <= 254) {
+        nSubsidy >>= 6;
+    }
+    if (254 < nHeight && nHeight <= 510) {
+        nSubsidy >>= 7;
+    }
+    if (510 < nHeight && nHeight <= 1022) {
+        nSubsidy >>= 8;
+    }
+    if (1022 < nHeight && nHeight <= 2046) {
+        nSubsidy >>= 9;
+    }
+    if (2046 < nHeight && nHeight <= 4094) {
+        nSubsidy >>= 10;
+    }
+    if (4094 < nHeight && nHeight <= 8190) {
+        nSubsidy >>= 11;
+    }
+    if (8190 < nHeight && nHeight <= 16382) {
+        nSubsidy >>= 12;
+    }
+    if (16382 < nHeight) {
+        // nMixedSubsidyHalvingInterval = 700800;
+        nSubsidy >>= 13;
+    }
+
+    // nSubsidy >>= (nHeight / nMixedSubsidyHalvingInterval);
+    nSubsidy >>= halvings;
+
+    // return nSubsidy + nFees;
+    return nSubsidy;
+}
+5.
+C:\deps\newbull-0.14.2-github\latest\src\chainparams.cpp
+many changes;
+
+2021.4.29 2020.9.26
+C:\deps\newbull-0.13.2-github\latest\src\chainparams.cpp
+C:\deps\newbull-0.13.2-github\latest\src\chainparams.h
+add PUBKEY_ADDRESS_D;
+modify PUBKEY_ADDRESS from 30(D) to 53(N);
+finnaly just modify PUBKEY_ADDRESS from 30(D) to 53(N) in chainparams.cpp;
+C:\deps\newbull-0.13.2-github\latest\src\base58.cpp
+vchVersion == params.Base58Prefix(CChainParams::PUBKEY_ADDRESS_D) ||
+    if (vchVersion == Params().Base58Prefix(CChainParams::PUBKEY_ADDRESS) || vchVersion == Params().Base58Prefix(CChainParams::PUBKEY_ADDRESS_D))
+    if (!IsValid() || (vchVersion != Params().Base58Prefix(CChainParams::PUBKEY_ADDRESS) && vchVersion != Params().Base58Prefix(CChainParams::PUBKEY_ADDRESS_D)))
+finnaly nothing change;
+C:\deps\newbull-0.13.2-github\latest\src\versionbits.cpp
+printf("versionbits Condition, h=%d, ", pindex->nHeight);
+C:\deps\newbull-0.13.2-github\latest\src\main.cpp
+printf("main Condition, h: %d, ", pindex->nHeight);
+add log print to console;
+
+2020.8.29 upgrade to 0.13.2
+0.
+"C:\deps\newbull-0.13.2-compile\go.sh"
+"C:\deps\newbull-0.13.2-compile\goonce.sh"
+echo "ver 2020.08.29"
+coinname="newbull"
+foldername="newbull-0.13.2"
+destdir="/usr/src/"
+mkdir ${destdir}${foldername}-compile
+cp -bruv --backup=t ../${foldername}-github/latest/. ${destdir}${foldername}-compile/
+还有很多
+1.
+"C:\deps\newbull-0.13.2-github\latest\depends\packages\bdb.mk"
+"C:\deps\newbull-0.13.2-github\latest\depends\packages\boost.mk"
+"C:\deps\newbull-0.13.2-github\latest\depends\packages\libevent.mk"
+"C:\deps\newbull-0.13.2-github\latest\depends\packages\native_comparisontool.mk"
+更换里面的源为自己本地服务器托管的，否则要么下载太慢，要么压根下载不来；
+http://127.0.0.1/20161015/bitcoin_depends
+2.
+"C:\deps\newbull-0.13.2-github\latest\src\amount.h"
+static const CAmount MAX_MONEY = 210000000000 * COIN;
+币总量从2100万改为21000亿；
+3.
+"C:\deps\newbull-0.13.2-github\latest\src\chainparamsbase.cpp"
+"C:\deps\newbull-0.13.2-github\latest\src\rpc\net.cpp"
+"C:\deps\newbull-0.13.2-github\latest\src\rpc\server.cpp"
+测试网络rpc端口从18332改为10104，修改主网rpc端口从8332改为10102，node端口8333改为10101；
+4.
+"C:\deps\newbull-0.13.2-github\latest\src\chainparams.cpp"
+just main net, so many codes;
+5.
+"C:\deps\newbull-0.13.2-github\latest\src\main.cpp"
+CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
+{
+    int halvings = nHeight / consensusParams.nSubsidyHalvingInterval;
+    // Force block reward to zero when right shift is undefined.
+    if (halvings >= 64)
+        return 0;
+
+    // CAmount nSubsidy = 50 * COIN;
+    // Subsidy is cut in half every 210,000 blocks which will occur approximately every 4 years.
+    // nSubsidy >>= halvings;
+    // return nSubsidy;
+
+    CAmount nSubsidy = 1048576000 * COIN;
+    // int halvings = nHeight / Params().SubsidyHalvingInterval();
+
+    // Force block reward to zero when right shift is undefined.
+    // if (halvings >= 64)
+    //     return nFees;
+
+    // Subsidy is cut in half every 210,000 blocks which will occur approximately every 4 years.
+    // nSubsidy >>= halvings;
+
+    if (0 < nHeight && nHeight <= 2) {
+        //nMixedSubsidyHalvingInterval = 2;
+        //nSubsidy >>= 1;
+    }
+    if (2 < nHeight && nHeight <= 6) {
+        //nMixedSubsidyHalvingInterval = 4;
+        nSubsidy >>= 1;
+    }
+    if (6 < nHeight && nHeight <= 14) {
+        //nMixedSubsidyHalvingInterval = 8;
+        nSubsidy >>= 2;
+    }
+    if (14 < nHeight && nHeight <= 30) {
+        //nMixedSubsidyHalvingInterval = 16;
+        nSubsidy >>= 3;
+    }
+    if (30 < nHeight && nHeight <= 62) {
+        //nMixedSubsidyHalvingInterval = 32;
+        nSubsidy >>= 4;
+    }
+    if (62 < nHeight && nHeight <= 126) {
+        nSubsidy >>= 5;
+    }
+    if (126 < nHeight && nHeight <= 254) {
+        nSubsidy >>= 6;
+    }
+    if (254 < nHeight && nHeight <= 510) {
+        nSubsidy >>= 7;
+    }
+    if (510 < nHeight && nHeight <= 1022) {
+        nSubsidy >>= 8;
+    }
+    if (1022 < nHeight && nHeight <= 2046) {
+        nSubsidy >>= 9;
+    }
+    if (2046 < nHeight && nHeight <= 4094) {
+        nSubsidy >>= 10;
+    }
+    if (4094 < nHeight && nHeight <= 8190) {
+        nSubsidy >>= 11;
+    }
+    if (8190 < nHeight && nHeight <= 16382) {
+        nSubsidy >>= 12;
+    }
+    if (16382 < nHeight) {
+        // nMixedSubsidyHalvingInterval = 700800;
+        nSubsidy >>= 13;
+    }
+
+    // nSubsidy >>= (nHeight / nMixedSubsidyHalvingInterval);
+    nSubsidy >>= halvings;
+
+    // return nSubsidy + nFees;
+    return nSubsidy;
+}
+6.
+"C:\deps\newbull-0.13.2-github\latest\src\pow.cpp"
+unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader* pblock, const Consensus::Params& params)
+{
+    unsigned int nProofOfWorkLimit = UintToArith256(params.powLimit).GetCompact();
+
+    // Genesis block
+    if (pindexLast == NULL)
+        return nProofOfWorkLimit;
+
+    // Hard adjustment difficulty 2019-02-06
+    // try 0.11.2, 0.12.1, dose this fix crazy crash?
+    // Hard adjustment difficulty again 2020-03-28 How to fix the crazy crash???
+    // try 0.13.2, dose this fix crazy crash?
+    if ((pindexLast->nHeight > 318095 && pindexLast->nHeight < 318099) ||
+        (pindexLast->nHeight == 320660)) {
+        // const CBlockIndex* pindexFirst = pindexLast;
+        // int64_t nActualTimespan = pindexLast->GetBlockTime() - pindexFirst->GetBlockTime();
+        // LogPrintf("  nActualTimespan = %d  before bounds\n", nActualTimespan);
+        // nActualTimespan = Params().TargetTimespan() / 4;
+        // Retarget
+        // uint256 bnNew;
+        // // uint256 bnNew2;
+        // uint256 bnOld;
+        // bnNew.SetCompact(pindexLast->nBits);
+        // bnOld = bnNew;
+        // // bnNew2 = bnNew;
+        // // bnNew *= nActualTimespan;
+        // // bnNew /= Params().TargetTimespan();
+        // bnNew /= 4; //nBits/4 means difficulty*4
+
+        // if (bnNew > Params().ProofOfWorkLimit())
+        //     bnNew = Params().ProofOfWorkLimit();
+
+        const arith_uint256 bnPowLimit = UintToArith256(params.powLimit);
+        arith_uint256 bnNew;
+        arith_uint256 bnOld;
+        bnNew.SetCompact(pindexLast->nBits);
+        bnOld = bnNew;
+        // bnNew *= nActualTimespan;
+        bnNew /= 4;
+
+        if (bnNew > bnPowLimit)
+            bnNew = bnPowLimit;
+
+        /// debug print
+        LogPrintf("GetNextWorkRequired RETARGET\n");
+        // LogPrintf("Params().TargetTimespan() = %d    nActualTimespan = %d\n", Params().TargetTimespan(), nActualTimespan);
+        LogPrintf("Before: %08x  %s\n", pindexLast->nBits, bnOld.ToString());
+        LogPrintf("After:  %08x  %s\n", bnNew.GetCompact(), bnNew.ToString());
+        // LogPrintf("After2:  %08x  %s\n", bnNew2.GetCompact(), bnNew2.ToString());
+        // LogPrintf("Params().ProofOfWorkLimit():  %08x  %s\n", Params().ProofOfWorkLimit().GetCompact(), Params().ProofOfWorkLimit().ToString());
+
+        return bnNew.GetCompact();
+    }
+
+    // Only change once per difficulty adjustment interval
+    if ((pindexLast->nHeight + 1) % params.DifficultyAdjustmentInterval() != 0) {
+        if (params.fPowAllowMinDifficultyBlocks) {
+            // Special difficulty rule for testnet:
+            // If the new block's timestamp is more than 2* 10 minutes
+            // then allow mining of a min-difficulty block.
+            if (pblock->GetBlockTime() > pindexLast->GetBlockTime() + params.nPowTargetSpacing * 2)
+                return nProofOfWorkLimit;
+            else {
+                // Return the last non-special-min-difficulty-rules-block
+                const CBlockIndex* pindex = pindexLast;
+                while (pindex->pprev && pindex->nHeight % params.DifficultyAdjustmentInterval() != 0 && pindex->nBits == nProofOfWorkLimit)
+                    pindex = pindex->pprev;
+                return pindex->nBits;
+            }
+        }
+        return pindexLast->nBits;
+    }
+
+    // Go back by what we want to be 14 days worth of blocks
+    int nHeightFirst = pindexLast->nHeight - (params.DifficultyAdjustmentInterval() - 1);
+    assert(nHeightFirst >= 0);
+    const CBlockIndex* pindexFirst = pindexLast->GetAncestor(nHeightFirst);
+    assert(pindexFirst);
+
+    return CalculateNextWorkRequired(pindexLast, pindexFirst->GetBlockTime(), params);
+}
+
+2020.3.11 upgrade to 0.12.1 compile fial by many times, tried many ways, giveup
+
+2019.4.25 upgrade to 0.11.2 compile fial by many times, tried many ways, giveup
+0.
+"C:\deps\newbull-0.11.2-compile\go.sh"
+"C:\deps\newbull-0.11.2-compile\goonce.sh"
+修改文件夹版本为0.11.2
+foldername=newbull-0.11.2
+1.
+C:\deps\newbull-0.11.2-github\latest\configure.ac
+AC_INIT([NewBull Core],[_CLIENT_VERSION_MAJOR._CLIENT_VERSION_MINOR._CLIENT_VERSION_REVISION],[info@newbull.org],[newbull])
+修改bitcoin的各项名称信息，比如exe右键属性中的版本号和版权等
+执行autogen.sh的过程，
+会自动生成C:\deps\newbull-0.10.4-compile\src\config\bitcoin-config.h.in文件；
+编译过程中，
+会自动生成C:\deps\newbull-0.10.4-compile\src\config\bitcoin-config.h，供大量程序文件中引用；
+2.
+"C:\deps\newbull-0.11.2-github\latest\src\clientversion.h"
+#define COPYRIGHT_STR "2009-" STRINGIZE(COPYRIGHT_YEAR) " The NewBull Core Developers"
+可以修改团队名称，甚至是起始年份；
+3.
+"C:\deps\newbull-0.11.2-github\latest\src\bitcoin-tx-res.rc"
+"C:\deps\newbull-0.11.2-github\latest\src\bitcoind-res.rc"
+"C:\deps\newbull-0.11.2-github\latest\src\bitcoin-cli-res.rc"
+这两个文件修改exe文件的右键属性中的详细信息；
+4.
+"C:\deps\newbull-0.11.2-github\latest\src\bitcoin-cli.cpp"
+"C:\deps\newbull-0.11.2-github\latest\src\bitcoind.cpp"
+"C:\deps\newbull-0.11.2-github\latest\src\bitcoin-tx.cpp"
+"C:\deps\newbull-0.11.2-github\latest\src\init.cpp"
+C:\deps\newbull-0.11.2-github\latest\src\main.cpp
+"C:\deps\newbull-0.11.2-github\latest\src\miner.cpp"
+"C:\deps\newbull-0.11.2-github\latest\src\net.cpp"
+"C:\deps\newbull-0.11.2-github\latest\src\rpcblockchain.cpp"
+"C:\deps\newbull-0.11.2-github\latest\src\rpcmining.cpp"
+C:\deps\newbull-0.11.2-github\latest\src\rpcmisc.cpp
+C:\deps\newbull-0.11.2-github\latest\src\rpcnet.cpp
+C:\deps\newbull-0.11.2-github\latest\src\rpcprotocol.cpp
+C:\deps\newbull-0.11.2-github\latest\src\rpcrawtransaction.cpp
+C:\deps\newbull-0.11.2-github\latest\src\rpcserver.cpp
+C:\deps\newbull-0.11.2-github\latest\src\timedata.cpp
+"C:\deps\newbull-0.11.2-github\latest\src\util.cpp"
+"C:\deps\newbull-0.11.2-github\latest\src\util.h"
+C:\deps\newbull-0.11.2-github\latest\src\wallet\rpcdump.cpp
+C:\deps\newbull-0.11.2-github\latest\src\wallet\rpcwallet.cpp
+C:\deps\newbull-0.11.2-github\latest\src\wallet\walletdb.cpp
+将Bitcoin字样改为NewBull，将bitcoin字样改为newbull；
+5.
+"C:\deps\newbull-0.11.2-github\latest\src\amount.cpp"
+"C:\deps\newbull-0.11.2-github\latest\src\init.cpp"
+"C:\deps\newbull-0.11.2-github\latest\src\rpcblockchain.cpp"
+"C:\deps\newbull-0.11.2-github\latest\src\rpcmisc.cpp"
+"C:\deps\newbull-0.11.2-github\latest\src\rpcnet.cpp"
+"C:\deps\newbull-0.11.2-github\latest\src\rpcrawtransaction.cpp"
+"C:\deps\newbull-0.11.2-github\latest\src\rpcserver.cpp"
+"C:\deps\newbull-0.11.2-github\latest\src\rpcserver.h"
+C:\deps\newbull-0.11.2-github\latest\src\wallet\rpcwallet.cpp
+return strprintf("%d.%08d NB/kB", nSatoshisPerK / COIN, nSatoshisPerK % COIN);
+BTC单位改为NB；btc改为nb；
+6.
+"C:\deps\newbull-0.11.2-github\latest\src\amount.h"
+static const CAmount MAX_MONEY = 210000000000 * COIN;
+币总量从2100万改为2100亿；
+7.
+"C:\deps\newbull-0.11.2-github\latest\src\bitcoin-cli.cpp"
+"C:\deps\newbull-0.11.2-github\latest\src\chainparamsbase.cpp"
+"C:\deps\newbull-0.11.2-github\latest\src\init.cpp"
+"C:\deps\newbull-0.11.2-github\latest\src\rpcserver.cpp"
+C:\deps\newbull-0.11.2-github\latest\src\rpcnet.cpp
+测试网络rpc端口从18332改为10104，修改主网rpc端口从8332改为10102，node端口8333改为10101；
+8.
+"C:\deps\newbull-0.11.2-github\latest\src\chainparams.cpp"
+consensus.nSubsidyHalvingInterval = 210000;
+        //blocks will halving block out 50 to 25 etc., this means about 4 years.
+        //cut in half every 700,800 blocks which will occur approximately every 4 years.
+        consensus.nSubsidyHalvingInterval = 700800;
+
+// consensus.powLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+        // bnProofOfWorkLimit = ~uint256(0) >> 32;
+        // bnProofOfWorkLimit = ~uint256(0) >> 16;
+        consensus.powLimit = uint256S("0000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+
+// nTargetTimespan = 14 * 24 * 60 * 60; // two weeks. about change difficulty per 6720(60m/3m=20/h*24h=480/d*14d=6720) blocks.
+        // nTargetSpacing = 3 * 60; // generate each block may use 3 minutes about.
+        // consensus.nPowTargetTimespan = 14 * 24 * 60 * 60; // two weeks. about change difficulty per 2016(60m/10m=6/h*24h=144/d*14d=2016) blocks.
+        consensus.nPowTargetTimespan = 14 * 24 * 60 * 60; // two weeks. about change difficulty per 6720(60m/3m=20/h*24h=480/d*14d=6720) blocks.
+        // consensus.nPowTargetSpacing = 10 * 60;
+        consensus.nPowTargetSpacing = 3 * 60; // generate each block may use 3 minutes about.
+
+// pchMessageStart[0] = 0xf9;
+        // pchMessageStart[1] = 0xbe;
+        // pchMessageStart[2] = 0xb4;
+        // pchMessageStart[3] = 0xd9;
+        pchMessageStart[0] = 0xe3;
+        pchMessageStart[1] = 0xfc;
+        pchMessageStart[2] = 0x9b;
+        pchMessageStart[3] = 0xd9;
+
+// nDefaultPort = 8333;
+        nDefaultPort = 10101;
+
+ // const char* pszTimestamp = "The Times 03/Jan/2009 Chancellor on brink of second bailout for banks";
+        const char* pszTimestamp = "The New York Times June 25, 2016 BREXIT SETS OFF A CASCADE OF AFTERSHOCKS";
+
+// txNew.vout[0].nValue = 50 * COIN;
+        txNew.vout[0].nValue = 1048576000 * COIN;
+
+ // genesis.nTime = 1231006505;
+        // genesis.nBits = 0x1d00ffff;
+        // genesis.nNonce = 2083236893;
+        genesis.nTime = 1466861400;
+        genesis.nBits = 0x1f00ffff;
+        genesis.nNonce = 63342;
+
+ // assert(consensus.hashGenesisBlock == uint256S("0x000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f"));
+        // assert(genesis.hashMerkleRoot == uint256S("0x4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b"));
+        assert(hashGenesisBlock == uint256("0x0000529cb36b46a72792152bbab7ddcac642b9ee918ac3dd8f9862001511b0a1"));
+        assert(genesis.hashMerkleRoot == uint256("0x1c736e9abfb024cce3fd1e1390b75b526ae82f69104e30d32a81943ee534715b"));
+
+        // vSeeds.push_back(CDNSSeedData("bitcoin.sipa.be", "seed.bitcoin.sipa.be"));                   // Pieter Wuille
+        // vSeeds.push_back(CDNSSeedData("bluematt.me", "dnsseed.bluematt.me"));                        // Matt Corallo
+        // vSeeds.push_back(CDNSSeedData("dashjr.org", "dnsseed.bitcoin.dashjr.org"));                  // Luke Dashjr
+        // vSeeds.push_back(CDNSSeedData("bitcoinstats.com", "seed.bitcoinstats.com"));                 // Christian Decker
+        // vSeeds.push_back(CDNSSeedData("xf2.org", "bitseed.xf2.org"));                                // Jeff Garzik
+        // vSeeds.push_back(CDNSSeedData("bitcoin.jonasschnelli.ch", "seed.bitcoin.jonasschnelli.ch")); // Jonas Schnelli
+
+// base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1, 0);
+        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1, 30); //30-31:D
+测试网络test及其创世块的相关修改：
+ // nDefaultPort = 18333;
+        nDefaultPort = 10103;
+
+//! Modify the testnet genesis block so the timestamp is valid for a later start.
+        // genesis.nTime = 1296688602;
+        // genesis.nNonce = 414098458;
+        // consensus.hashGenesisBlock = genesis.GetHash();
+        // assert(consensus.hashGenesisBlock == uint256S("0x000000000933ea01ad0ee984209779baaec3ced90fa3f408719526f8d77f4943"));
+        genesis.nTime = 1466861400;
+        genesis.nNonce = 184989;
+        consensus.hashGenesisBlock = genesis.GetHash();
+        assert(consensus.hashGenesisBlock == uint256("0x0000147ce63e90891448baaf2e5cd0cb56768498a7e02d8ceccd9fd033c4f504"));
+
+// vSeeds.push_back(CDNSSeedData("alexykot.me", "testnet-seed.alexykot.me"));
+        // vSeeds.push_back(CDNSSeedData("bitcoin.petertodd.org", "testnet-seed.bitcoin.petertodd.org"));
+        // vSeeds.push_back(CDNSSeedData("bluematt.me", "testnet-seed.bluematt.me"));
+        // vSeeds.push_back(CDNSSeedData("bitcoin.schildbach.de", "testnet-seed.bitcoin.schildbach.de"));
+注册网络regtest及其创世块的相关修改：
+// genesis.nTime = 1296688602;
+        // genesis.nBits = 0x207fffff;
+        // genesis.nNonce = 2;
+        // consensus.hashGenesisBlock = genesis.GetHash();
+        // nDefaultPort = 18444;
+        // assert(consensus.hashGenesisBlock == uint256S("0x0f9188f13cb7b2c71f2a335e3a4fc328bf5beb436012afca590b1a11466e2206"));
+        genesis.nTime = 1466861400;
+        genesis.nBits = 0x207fffff;
+        genesis.nNonce = 3;
+        hashGenesisBlock = genesis.GetHash();
+        nDefaultPort = 10105;
+        assert(hashGenesisBlock == uint256("0x05c660a19b17c141e739eccab6c2aade26726c991162ec469c7dca67ad24af91"));
+9.
+"C:\deps\newbull-0.11.2-github\latest\src\main.cpp"
+CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
+{
+    int halvings = nHeight / consensusParams.nSubsidyHalvingInterval;
+    // Force block reward to zero when right shift is undefined.
+    if (halvings >= 64)
+        return 0;
+
+    // CAmount nSubsidy = 50 * COIN;
+    // Subsidy is cut in half every 210,000 blocks which will occur approximately every 4 years.
+    // nSubsidy >>= halvings;
+    // return nSubsidy;
+
+    CAmount nSubsidy = 1048576000 * COIN;
+    // int halvings = nHeight / Params().SubsidyHalvingInterval();
+
+    // Force block reward to zero when right shift is undefined.
+    // if (halvings >= 64)
+    //     return nFees;
+
+    // Subsidy is cut in half every 210,000 blocks which will occur approximately every 4 years.
+    // nSubsidy >>= halvings;
+
+    if (0 < nHeight && nHeight <= 2) {
+        //nMixedSubsidyHalvingInterval = 2;
+        //nSubsidy >>= 1;
+    }
+    if (2 < nHeight && nHeight <= 6) {
+        //nMixedSubsidyHalvingInterval = 4;
+        nSubsidy >>= 1;
+    }
+    if (6 < nHeight && nHeight <= 14) {
+        //nMixedSubsidyHalvingInterval = 8;
+        nSubsidy >>= 2;
+    }
+    if (14 < nHeight && nHeight <= 30) {
+        //nMixedSubsidyHalvingInterval = 16;
+        nSubsidy >>= 3;
+    }
+    if (30 < nHeight && nHeight <= 62) {
+        //nMixedSubsidyHalvingInterval = 32;
+        nSubsidy >>= 4;
+    }
+    if (62 < nHeight && nHeight <= 126) {
+        nSubsidy >>= 5;
+    }
+    if (126 < nHeight && nHeight <= 254) {
+        nSubsidy >>= 6;
+    }
+    if (254 < nHeight && nHeight <= 510) {
+        nSubsidy >>= 7;
+    }
+    if (510 < nHeight && nHeight <= 1022) {
+        nSubsidy >>= 8;
+    }
+    if (1022 < nHeight && nHeight <= 2046) {
+        nSubsidy >>= 9;
+    }
+    if (2046 < nHeight && nHeight <= 4094) {
+        nSubsidy >>= 10;
+    }
+    if (4094 < nHeight && nHeight <= 8190) {
+        nSubsidy >>= 11;
+    }
+    if (8190 < nHeight && nHeight <= 16382) {
+        nSubsidy >>= 12;
+    }
+    if (16382 < nHeight) {
+        // nMixedSubsidyHalvingInterval = 700800;
+        nSubsidy >>= 13;
+    }
+
+    // nSubsidy >>= (nHeight / nMixedSubsidyHalvingInterval);
+    nSubsidy >>= halvings;
+
+    // return nSubsidy + nFees;
+    return nSubsidy;
+}
+10.
+"C:\deps\newbull-0.11.2-github\latest\src\pow.cpp"
+unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader* pblock, const Consensus::Params& params)
+{
+    unsigned int nProofOfWorkLimit = UintToArith256(params.powLimit).GetCompact();
+
+    // Genesis block
+    if (pindexLast == NULL)
+        return nProofOfWorkLimit;
+
+    // Hard adjustment difficulty 2019-02-06
+    // Hard adjustment difficulty again 2020-03-28 How to fix the crazy crash???
+    // try 0.11.2, 2020-08-29, dose this fix crazy crash?
+    if ((pindexLast->nHeight > 318095 && pindexLast->nHeight < 318099) ||
+        (pindexLast->nHeight == 320660)) {
+        // const CBlockIndex* pindexFirst = pindexLast;
+        // int64_t nActualTimespan = pindexLast->GetBlockTime() - pindexFirst->GetBlockTime();
+        // LogPrintf("  nActualTimespan = %d  before bounds\n", nActualTimespan);
+        // nActualTimespan = Params().TargetTimespan() / 4;
+        // Retarget
+        // uint256 bnNew;
+        // // uint256 bnNew2;
+        // uint256 bnOld;
+        // bnNew.SetCompact(pindexLast->nBits);
+        // bnOld = bnNew;
+        // // bnNew2 = bnNew;
+        // // bnNew *= nActualTimespan;
+        // // bnNew /= Params().TargetTimespan();
+        // bnNew /= 4; //nBits/4 means difficulty*4
+
+        // if (bnNew > Params().ProofOfWorkLimit())
+        //     bnNew = Params().ProofOfWorkLimit();
+
+        const arith_uint256 bnPowLimit = UintToArith256(params.powLimit);
+        arith_uint256 bnNew;
+        arith_uint256 bnOld;
+        bnNew.SetCompact(pindexLast->nBits);
+        bnOld = bnNew;
+        // bnNew *= nActualTimespan;
+        bnNew /= 4;
+
+        if (bnNew > bnPowLimit)
+            bnNew = bnPowLimit;
+
+        /// debug print
+        LogPrintf("GetNextWorkRequired RETARGET\n");
+        // LogPrintf("Params().TargetTimespan() = %d    nActualTimespan = %d\n", Params().TargetTimespan(), nActualTimespan);
+        LogPrintf("Before: %08x  %s\n", pindexLast->nBits, bnOld.ToString());
+        LogPrintf("After:  %08x  %s\n", bnNew.GetCompact(), bnNew.ToString());
+        // LogPrintf("After2:  %08x  %s\n", bnNew2.GetCompact(), bnNew2.ToString());
+        // LogPrintf("Params().ProofOfWorkLimit():  %08x  %s\n", Params().ProofOfWorkLimit().GetCompact(), Params().ProofOfWorkLimit().ToString());
+
+        return bnNew.GetCompact();
+    }
+
+    // Only change once per difficulty adjustment interval
+    if ((pindexLast->nHeight + 1) % params.DifficultyAdjustmentInterval() != 0) {
+        if (params.fPowAllowMinDifficultyBlocks) {
+            // Special difficulty rule for testnet:
+            // If the new block's timestamp is more than 2* 10 minutes
+            // then allow mining of a min-difficulty block.
+            if (pblock->GetBlockTime() > pindexLast->GetBlockTime() + params.nPowTargetSpacing * 2)
+                return nProofOfWorkLimit;
+            else {
+                // Return the last non-special-min-difficulty-rules-block
+                const CBlockIndex* pindex = pindexLast;
+                while (pindex->pprev && pindex->nHeight % params.DifficultyAdjustmentInterval() != 0 && pindex->nBits == nProofOfWorkLimit)
+                    pindex = pindex->pprev;
+                return pindex->nBits;
+            }
+        }
+        return pindexLast->nBits;
+    }
+
+    // Go back by what we want to be 14 days worth of blocks
+    int nHeightFirst = pindexLast->nHeight - (params.DifficultyAdjustmentInterval() - 1);
+    assert(nHeightFirst >= 0);
+    const CBlockIndex* pindexFirst = pindexLast->GetAncestor(nHeightFirst);
+    assert(pindexFirst);
+
+    return CalculateNextWorkRequired(pindexLast, pindexFirst->GetBlockTime(), params);
+}
+
+2021.4.18 2020.3.28utc
+C:\deps\newbull-0.10.4-github\latest\src\pow.cpp
+// Hard adjustment difficulty again 2020-03-28 How to fix the crazy crash???
+if ((pindexLast->nHeight > 318095 && pindexLast->nHeight < 318099) ||
+        (pindexLast->nHeight == 320660)) {
+
+2021.4.4 2019-02-06utc
+C:\deps\newbull-0.10.4-github\latest\src\pow.cpp
+// Hard adjustment difficulty 2019-02-06
+    if (pindexLast->nHeight > 318095 && pindexLast->nHeight < 318099) {
+挖矿总是崩溃，考虑是否因为出块速度太密集，试试提升难度；
+经过测试之后，可知nBits/4相当于难度*4；
+
+2021.2.21
+C:\deps\newbull-0.10.4-compile\goonce.sh
+复制go.sh为goonce.sh，意为一次性使用，适用于：比如第一次，或者修改了configure.ac或者其它需要执行autogen.sh和configure的情况使用；
+C:\deps\newbull-0.10.4-compile\go.sh
+删除了autogen.sh和configure的执行，直接备份，拷贝，make，strip，导出；
+这样平时改动不大的话，就执行这个，效率提高一些；
+C:\deps\newbull-0.10.4-github\latest\src\main.cpp
+IsInitialBlockDownload增加LogPrintf打印调试信息，用于排查问题，问题解决后可以注释掉；
+将写死的24 * 6 改为chainParams.MaxTipAge() / chainParams.TargetSpacing()
+即通过预先设定的区块链参数来动态计算得到chainParams.MaxTipAge()这段时间产生的块的数量；chainParams.TargetSpacing()为产生目标块所需要的秒数，本例为3分钟产生一个块，即180秒；
+C:\deps\newbull-0.10.4-github\latest\src\chainparams.cpp
+***所以这里要注意：当一条区块链长时间没有挖掘的时候，要临时修改nMaxTipAge = 3*365*24 * 60 * 60; 即该值必须大于等于当前时间戳-最后一个块的时间戳，否则将会出现明明已经同步，但是仍然提示NewBull is downloading blocks...的情况，导致无法挖矿；
+用完后记得再改回来，以后的版本如果有了-maxtipage参数可以直接通过参数方便的设置；
+
+2021.2.20
+"C:\deps\newbull-0.10.4-misc\newbull.conf"
+注释掉这个：#txindex=1
+这个开了之后，在重建block的索引的过程中到6719这个块的时候就无法继续下去了，cpu一直占用，但是并没有到6720；
+因此暂时关闭该选项，但估计在未来要对block数据进行剪枝操作，以及隔离见证和闪电网络的话，都是需要reindex的；
+
+2021.2.18
+1.
+C:\deps\newbull-0.10.4-github\latest\configure.ac
+修改bitcoin的各项名称信息，比如exe右键属性中的版本号和版权等；
+这个先改，改完之后，第一次的话，建议手动复制C:\deps\newbull-0.10.4-github\latest\内全部文件到C:\deps\newbull-0.10.4-compile\下，然后
+执行autogen.sh，
+会自动生成C:\deps\newbull-0.10.4-compile\src\config\bitcoin-config.h.in文件；
+执行go.sh，
+会自动将C:\deps\newbull-0.10.4-github\latest按照年月日时分秒的时间后缀备份到同级目录下
+然后复制到C:\deps\newbull-0.10.4-compile\下
+然后启动编译，编译过程中，
+会自动生成C:\deps\newbull-0.10.4-compile\src\config\bitcoin-config.h，供大量程序文件中引用；
+此文件中#define PACKAGE_URL ""字段的值没找到在哪里设置的，改这个文件没用，每次go.sh的时候都会被覆盖；
+以后再此迭代的话，涉及修改这个文件：
+C:\deps\newbull-0.10.4-github\latest\configure.ac
+的话，记得重复上面的执行autogen.sh的过程；
+如果没有修改这个文件，则直接运行go.sh即可；
+后记：由于在go.sh中调整了执行内容，现会bak之后copy到compile然后autogen，之后再去configure，最后make，strip，copy exe到bin，因此不需要再去手动copy和手动切换执行autogen了；
+这样的缺点，autogen需要时间，configure也需要时间，如果可以直接make那最好；
+2.
+C:\deps\newbull-0.10.4-github\latest\src\clientversion.h
+该文件中的版本号和版权年份修改无效，实际还是使用的C:\deps\newbull-0.10.4-compile\src\config\bitcoin-config.h，而这个是通过C:\deps\newbull-0.10.4-github\latest\configure.ac的修改，然后执行autogen.sh得来的，因此版本号和版权年份还是在上面1中所述文件修改；
+此文件唯一可修改的是版权字符串：
+#define COPYRIGHT_STR "2009-" STRINGIZE(COPYRIGHT_YEAR) " The NewBull Core Developers"
+可以修改团队名称，甚至是起始年份；
+3.
+C:\deps\newbull-0.10.4-github\latest\src\bitcoind-res.rc
+C:\deps\newbull-0.10.4-github\latest\src\bitcoin-cli-res.rc
+这两个文件修改exe文件的右键属性中的详细信息；
+4.
+C:\deps\newbull-0.10.4-github\latest\Makefile.am
+C:\deps\newbull-0.10.4-github\latest\src\Makefile.am
+这两个文件把输出exe的文件名从bitcoin改为newbull，
+实际经过测试，
+src\Makefile.am如果改了则编译报错：No rule to make target `newbulld.o', needed by `newbulld.exe'. Stop.
+Makefile.am改不改都无影响；
+因此修改了go.sh的写法：
+5.
+C:\deps\newbull-0.10.4-compile\go.sh
+strip src/${coinname}d.exe 改为：strip src/bitcoind.exe
+cp src/${coinname}d.exe ../${foldername}-bin/$newcoinqtname/ 改为：cp src/bitcoind.exe ../${foldername}-bin/$newcoinqtname/${coinname}d.exe
+bitcoin-cli.exe也是用样的做了修改；
+增加了：
+strip src/bitcoin-tx.exe
+cp src/bitcoin-tx.exe ../${foldername}-bin/$newcoinqtname/$coinname-tx.exe
+调整了文件夹中的日期格式为$(date +%Y-%m%d-%H%M)
+调整了文件夹中的newbull-qt-date为newbulld-date
+屏蔽了newbull-qt的相关输出
+计划后续GUI这块废弃qt技术，采用html技术，比如c#+webview+html5+css3+js，cefcharp，nodejs，nw，electron等跨平台桌面技术；
+6.
+C:\deps\newbull-0.10.4-github\latest\src\bitcoind.cpp
+C:\deps\newbull-0.10.4-github\latest\src\bitcoin-cli.cpp
+C:\deps\newbull-0.10.4-github\latest\src\bitcoin-tx.cpp
+C:\deps\newbull-0.10.4-github\latest\src\init.cpp
+C:\deps\newbull-0.10.4-github\latest\src\util.h
+C:\deps\newbull-0.10.4-github\latest\src\util.cpp
+C:\deps\newbull-0.10.4-github\latest\src\net.cpp
+C:\deps\newbull-0.10.4-github\latest\src\rpcblockchain.cpp
+C:\deps\newbull-0.10.4-github\latest\src\miner.cpp
+C:\deps\newbull-0.10.4-github\latest\src\rpcmining.cpp
+将Bitcoin字样改为NewBull，将bitcoin字样改为newbull；
+7.
+C:\deps\newbull-0.10.4-github\latest\src\amount.cpp
+将"%d.%08d BTC/kB"改为"%d.%08d NB/kB"；
+8.
+C:\deps\newbull-0.10.4-github\latest\src\amount.h
+static const CAmount MAX_MONEY = 210000000000 * COIN;
+币总量从2100万改为2100亿；
+9.
+C:\deps\newbull-0.10.4-github\latest\src\chainparams.cpp
+修改通信魔术符号为：
+pchMessageStart[0] = 0xe3;
+        pchMessageStart[1] = 0xfc;
+        pchMessageStart[2] = 0x9b;
+        pchMessageStart[3] = 0xd9;
+修改默认端口nDefaultPort = 10101;
+修改初始难度：bnProofOfWorkLimit = ~uint256(0) >> 16;
+修改减半块数：  nSubsidyHalvingInterval = 700800; 大约每4年减半一次
+出块目标难度调整时间跨度：保持2周不变，但由于出块时间改为3分钟，因此大概每6720块调整一次难度；
+出块目标间距：3分钟；
+新闻消息改为： const char* pszTimestamp = "The New York Times June 25, 2016 BREXIT SETS OFF A CASCADE OF AFTERSHOCKS";
+创世块改为：txNew.vout[0].nValue = 1048576000 * COIN;
+注意，这10亿多币相当于扔掉的，因为0号区块没有所有权也无法转账；
+创世块的其它信息改为：
+ genesis.nTime = 1466861400;
+        genesis.nBits = 0x1f00ffff;
+        genesis.nNonce = 63342;
+创世块的hash值和merkle树改为：
+assert(hashGenesisBlock == uint256("0x0000529cb36b46a72792152bbab7ddcac642b9ee918ac3dd8f9862001511b0a1"));
+        assert(genesis.hashMerkleRoot == uint256("0x1c736e9abfb024cce3fd1e1390b75b526ae82f69104e30d32a81943ee534715b"));
+收款地址前缀改为：base58Prefixes[PUBKEY_ADDRESS] = list_of(30); //30-31:D
+测试网络test及其创世块的相关修改：
+nDefaultPort = 10103;
+        nEnforceBlockUpgradeMajority = 51;
+        nRejectBlockOutdatedMajority = 75;
+        nToCheckBlockUpgradeMajority = 100;
+        nMinerThreads = 0;
+        nTargetTimespan = 14 * 24 * 60 * 60; //! two weeks
+        // nTargetSpacing = 10 * 60;
+        nTargetSpacing = 3 * 60;
+        nMaxTipAge = 0x7fffffff;
+
+        //! Modify the testnet genesis block so the timestamp is valid for a later start.
+        // genesis.nTime = 1296688602;
+        // genesis.nNonce = 414098458;
+        // hashGenesisBlock = genesis.GetHash();
+        // assert(hashGenesisBlock == uint256("0x000000000933ea01ad0ee984209779baaec3ced90fa3f408719526f8d77f4943"));
+        genesis.nTime = 1466861400;
+        genesis.nNonce = 184989;
+        hashGenesisBlock = genesis.GetHash();
+        assert(hashGenesisBlock == uint256("0x0000147ce63e90891448baaf2e5cd0cb56768498a7e02d8ceccd9fd033c4f504"));
+注册网络regtest及其创世块的相关修改：
+nTargetSpacing = 3 * 60;
+        bnProofOfWorkLimit = ~uint256(0) >> 1;
+        nMaxTipAge = 24 * 60 * 60;
+        // genesis.nTime = 1296688602;
+        // genesis.nBits = 0x207fffff;
+        // genesis.nNonce = 2;
+        // hashGenesisBlock = genesis.GetHash();
+        // nDefaultPort = 18444;
+        // assert(hashGenesisBlock == uint256("0x0f9188f13cb7b2c71f2a335e3a4fc328bf5beb436012afca590b1a11466e2206"));
+        genesis.nTime = 1466861400;
+        genesis.nBits = 0x207fffff;
+        genesis.nNonce = 3;
+        hashGenesisBlock = genesis.GetHash();
+        nDefaultPort = 10105;
+        assert(hashGenesisBlock == uint256("0x05c660a19b17c141e739eccab6c2aade26726c991162ec469c7dca67ad24af91"));
+单元测试网络unittest相关修改：
+nDefaultPort = 10107;
+注释掉：
+// convertSeed6(vFixedSeeds, pnSeed6_test, ARRAYLEN(pnSeed6_test));
+// convertSeed6(vFixedSeeds, pnSeed6_main, ARRAYLEN(pnSeed6_main));
+10.
+C:\deps\newbull-0.10.4-github\latest\src\main.cpp
+将GetBlockValue函数体改为：
+CAmount GetBlockValue(int nHeight, const CAmount& nFees)
+{
+    // CAmount nSubsidy = 50 * COIN;
+    CAmount nSubsidy = 1048576000 * COIN;
+    int halvings = nHeight / Params().SubsidyHalvingInterval();
+
+    // Force block reward to zero when right shift is undefined.
+    if (halvings >= 64)
+        return nFees;
+
+    // Subsidy is cut in half every 210,000 blocks which will occur approximately every 4 years.
+    // nSubsidy >>= halvings;
+
+    if (0 < nHeight && nHeight <= 2) {
+		//nMixedSubsidyHalvingInterval = 2;
+		//nSubsidy >>= 1;
+	}
+	if (2 < nHeight && nHeight <= 6) {
+		//nMixedSubsidyHalvingInterval = 4;
+		nSubsidy >>= 1;
+	}
+	if (6 < nHeight && nHeight <= 14) {
+		//nMixedSubsidyHalvingInterval = 8;
+		nSubsidy >>= 2;
+	}
+	if (14 < nHeight && nHeight <= 30) {
+		//nMixedSubsidyHalvingInterval = 16;
+		nSubsidy >>= 3;
+	}
+	if (30 < nHeight && nHeight <= 62) {
+		//nMixedSubsidyHalvingInterval = 32;
+		nSubsidy >>= 4;
+	}
+	if (62 < nHeight && nHeight <= 126) {
+		nSubsidy >>= 5;
+	}
+	if (126 < nHeight && nHeight <= 254) {
+		nSubsidy >>= 6;
+	}
+	if (254 < nHeight && nHeight <= 510) {
+		nSubsidy >>= 7;
+	}
+	if (510 < nHeight && nHeight <= 1022) {
+		nSubsidy >>= 8;
+	}
+	if (1022 < nHeight && nHeight <= 2046) {
+		nSubsidy >>= 9;
+	}
+	if (2046 < nHeight && nHeight <= 4094) {
+		nSubsidy >>= 10;
+	}
+	if (4094 < nHeight && nHeight <= 8190) {
+		nSubsidy >>= 11;
+	}
+	if (8190 < nHeight && nHeight <= 16382) {
+		nSubsidy >>= 12;
+	}
+	if (16382 < nHeight) {
+		// nMixedSubsidyHalvingInterval = 700800;
+		nSubsidy >>= 13;
+	}
+
+	// nSubsidy >>= (nHeight / nMixedSubsidyHalvingInterval);
+    nSubsidy >>= halvings;
+
+    return nSubsidy + nFees;
+}
+11.
+C:\deps\newbull-0.10.4-github\latest\src\txmempool.h
+这里在0.9.5的版本中是改为COIN * 480 / 250;但0.10.4这个版本就不改了，保持低交易费率吧；
+inline double AllowFreeThreshold()
+{
+    return COIN * 144 / 250;
+}
+12.
+C:\deps\newbull-0.10.4-github\latest\src\bitcoin-cli.cpp
+C:\deps\newbull-0.10.4-github\latest\src\chainparamsbase.cpp
+C:\deps\newbull-0.10.4-github\latest\src\init.cpp
+C:\deps\newbull-0.10.4-github\latest\src\rpcserver.cpp
+修改主网rpc端口从8332改为10102，测试网络rpc端口从18332改为10104
+13.
+C:\deps\newbull-0.10.4-github\latest\src\init.cpp
+C:\deps\newbull-0.10.4-github\latest\src\rpcblockchain.cpp
+C:\deps\newbull-0.10.4-github\latest\src\rpcmisc.cpp
+C:\deps\newbull-0.10.4-github\latest\src\rpcnet.cpp
+C:\deps\newbull-0.10.4-github\latest\src\rpcrawtransaction.cpp
+btc改为nb，BTC改为NB；
+
+2021.2.17
+抛弃之前的0.9.5版本的，尝试从0.10.4开始重新编码；
+
+2018.9.27
+main.cpp
+main.h
+db.h
+change many such as main.cpp line=925 to printf("%s\t line=%d\t %s\t nHeight=%u\t hash=%s\n", __FILE__, __LINE__, __FUNCTION__,
+
+2018.5.28
+change Algorithm from sha256+sha256 to sha512+sha256;
+C:\deps\abshit-0.9.5-github\latest\src\core.cpp
+in void CBlock::print() const
+change GetHash().ToString(),
+	to GetPoWHash512().ToString(),
+C:\deps\abshit-0.9.5-github\latest\src\main.cpp
+in bool ProcessBlock(CValidationState &state, CNode* pfrom, CBlock* pblock, CDiskBlockPos *dbp)
+change uint256 hash = pblock->GetHash();
+ to uint256 hash = GetPoWHashSHA512(BEGIN(pblock->nVersion), END(pblock->nNonce));
+in bool CheckBlock(const CBlock& block, CValidationState& state, bool fCheckPOW, bool fCheckMerkleRoot)
+change if (fCheckPOW && !CheckProofOfWork(block.GetHash(), block.nBits))
+ to if (fCheckPOW && !CheckProofOfWork(block.GetPowHash512(), block.nBits))
+in bool AddToBlockIndex(CBlock& block, CValidationState& state, const CDiskBlockPos& pos)
+
+C:\deps\abshit-0.9.5-github\latest\src\miner.cpp
+in bool CheckWork(CBlock* pblock, CWallet& wallet, CReserveKey& reservekey)
+change uint256 hash = pblock->GetHash();
+ to uint256 hash = GetPoWHashSHA512(BEGIN(pblock->nVersion), END(pblock->nNonce));
+
+C:\deps\abshit-0.9.5-github\latest\src\rpcblockchain.cpp
+in Object blockToJSON(const CBlock& block, const CBlockIndex* blockindex)
+change result.push_back(Pair("hash", block.GetHash().GetHex()));
+ to result.push_back(Pair("hash", block.GetPoWHash512().GetHex()));
+
+
+2018.5.19-25
+change Algorithm from sha256+sha256 to sha512+sha256;
+many many change and test, but finally this:
+"C:\deps\abshit-0.9.5-github\latest\src\core.cpp"
+remove uint256 GetPoWHash() const;
+C:\deps\abshit-0.9.5-github\latest\src\hash.h
+add inline uint256 GetPoWHashSHA512(const T1 pbegin, const T1 pend)
+C:\deps\abshit-0.9.5-github\latest\src\miner.cpp
+add ScanHash_CryptoPP512;
+and many changes;
+
+2018.5.18
+change Algorithm from sha256+sha256 to sha512+sha256;
+"C:\deps\abshit-0.9.5-github\latest\src\core.h"
+add uint256 GetPoWHash() const;
+"C:\deps\abshit-0.9.5-github\latest\src\core.cpp"
+add uint256 GetPoWHash() const;
+
+2018.5.17
+change Algorithm from sha256+sha256 to sha512+sha256;
+"C:\deps\abshit-0.9.5-github\latest\src\miner.h"
+add void SHA512Transform(void* pstate, void* pinput, const void* pinit);
+"C:\deps\abshit-0.9.5-github\latest\src\miner.cpp"
+add void SHA512Transform(void* pstate, void* pinput, const void* pinit);
+mod ScanHash_CryptoPP{} first SHA256Transform(phash1, pdata, pmidstate) to SHA512Transform(phash1, pdata, pmidstate);

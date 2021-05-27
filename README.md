@@ -69,9 +69,9 @@ NewBull is 2,100,000,000,000, and unlimited additional currency
 
 #### The current block reward schedule:
 
-1:	      1,048,576,000       Genesis Block, height 0
+1:        1,048,576,000 NB       Genesis Block, height 0
 
-2:      	1,048,576,000       First two blocks, heght 1,2
+2:        1,048,576,000 NB       First two blocks, heght 1,2
 
 4:	      524,288,000         height 3,4,5,6,7
 

@@ -8,6 +8,8 @@ The NewBull is git clone from bitcoin and dogecoin.
 
 This is a project to learn about blockchain and experiment with blockchain.
 
+If you want to download precompiled binaries and blockchain data, please visit the newbull offical website.
+
 The website is https://newbull.org
 
 <!--

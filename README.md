@@ -19,9 +19,9 @@ The website is https://newbull.org
 
 Bitcoin is 21,000,000
 
-Dogecoin is unlimit
+Dogecoin is 10,000,000,000, and unlimited additional currency
 
-NewBull is unlimit
+NewBull is 2,100,000,000,000, and unlimited additional currency
 
 
 # 2. Rewards
@@ -118,11 +118,11 @@ I am sorry, I forgot it.
 
 
 # 3. Misc:
-Bitcoin: Diffculty is start with 1 I think, And adjustment every 14 days. Generate the block every 600 seconds.
+Bitcoin: Diffculty is start with 1 I think, And adjustment every 14 days. Generate the block every 600 seconds. The algorithm is sha256d.
 
-Dogecoin: Diffculty is start with 0x00000f, And adjustment every 4 hours. Generate the block every 60 seconds.
+Dogecoin: Diffculty is start with 0x00000f, And adjustment every 4 hours. Generate the block every 60 seconds. The algorithm is same as Litecoin (scrypt).
 
-NewBull: Diffculty is start with 0x0000ff for now*, And adjustment every 14 days. Generate the block every 180 seconds.
+NewBull: Diffculty is start with 0x0000ff for now*, And adjustment every 14 days. Generate the block every 180 seconds. The algorithm is same as Bitcoin (sha256d).
 
 ### * 
 

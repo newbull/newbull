@@ -1,3 +1,4 @@
+![image](icon/icon-1024x1024-solid.png)
 ### Hi there 👋
 
 This is newbull github.

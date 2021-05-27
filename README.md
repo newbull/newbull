@@ -18,17 +18,17 @@ If you want to download precompiled binaries and blockchain data, please visit t
 
 # 1. Total Amount
 
-Bitcoin is 21,000,000
+Bitcoin is 21,000,000 BTC
 
-Dogecoin is 10,000,000,000, and unlimited additional currency
+Dogecoin is 10,000,000,000 DOGE, and unlimited additional currency
 
-NewBull is 2,100,000,000,000, and unlimited additional currency
+NewBull is 2,100,000,000,000 NB, and unlimited additional currency
 
 
 # 2. Rewards
 
 ### Bitcoin: 
-50, and halve every 4 years
+50 BTC, and halve every 4 years
 
 ### Dogecoin: 
 #### The current block reward schedule:

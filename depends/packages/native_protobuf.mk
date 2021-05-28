@@ -1,8 +1,8 @@
 package=native_protobuf
-$(package)_version=2.6.1
-$(package)_download_path=https://github.com/google/protobuf/releases/download/v$($(package)_version)
-$(package)_file_name=protobuf-$($(package)_version).tar.bz2
-$(package)_sha256_hash=ee445612d544d885ae240ffbcbf9267faa9f593b7b101f21d58beceb92661910
+$(package)_version=3.0.2
+$(package)_download_path=http://127.0.0.1/20161015/bitcoin_depends
+$(package)_file_name=protobuf-cpp-$($(package)_version).tar.gz
+$(package)_sha256_hash=0a6f73ab32b2888bf7f8c29608f8624a78950de4ae992c3688c3b123b6c84802
 
 define $(package)_set_vars
 $(package)_config_opts=--disable-shared

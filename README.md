@@ -141,6 +141,14 @@ So, the -reindex can not be use. I will work on this in future.
 
 It's very powerful. But I developed a simple one(NewBull Wallet GUI) instead.
 
+If you want to use the Qt Wallet GUI, you could compile with yourself.
+
+### But please note I have just edit a few basic files, so, you may view many Bitcoin/bitcoin string.
+
+If you mind that, please do not use the Qt Wallet GUI or you could edit some files, and then compile.
+
+PR is welcome.
+
 ## 2. Corrupted Blockchain data file
 
 I don't know what caused the blockchain data file to be corrupted. But it is estimated that hundreds or thousands of blocks and rewards have been lost.

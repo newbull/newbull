@@ -113,10 +113,6 @@ NewBull is 2,100,000,000,000 NB, and unlimited additional currency
 
 700800:	  1,000 NB               and forever do this.
 
-#### The original block reward schedule:
-
-I am sorry, I forgot it.
-
 
 # 3. Misc:
 Bitcoin: Diffculty is start with 1 I think, And adjustment every 14 days. Generate the block every 600 seconds. The algorithm is sha256d.

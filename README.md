@@ -67,7 +67,7 @@ NewBull is 2,100,000,000,000 NB, and unlimited additional currency
 
 ### NewBull:
 
-#### The current block reward schedule:
+#### The block reward schedule:
 
 1:        1,048,576,000 NB       Genesis Block, height 0
 
@@ -119,9 +119,9 @@ Bitcoin: Diffculty is start with 1 I think, And adjustment every 14 days. Genera
 
 Dogecoin: Diffculty is start with 0x00000f, And adjustment every 4 hours. Generate the block every 60 seconds. The algorithm is same as Litecoin (scrypt).
 
-NewBull: Diffculty is start with 0x0000ff for now*, And adjustment every 14 days. Generate the block every 180 seconds. The algorithm is same as Bitcoin (sha256d).
+NewBull: Diffculty is start with 0x0000ff for now***, And adjustment every 14 days. Generate the block every 180 seconds. The algorithm is same as Bitcoin (sha256d).
 
-### * 
+### *** 
 
 I am sorry, I have lost my old version source code, and I forgot the diffculty about old version. 
 

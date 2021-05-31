@@ -7,7 +7,7 @@ The NewBull's symbol is NB. The open source(MIT) decentralized cryptocurrency ba
 
 You may switch the branche to 0.14.2 to git clone, and compile by yourself.
 
-The NewBull is git clone from bitcoin and dogecoin.
+The NewBull is git clone from bitcoin and learnning from both bitcoin and dogecoin.
 
 This is a project to learn about blockchain and experiment with blockchain.
 

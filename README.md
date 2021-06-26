@@ -1,3 +1,5 @@
+If you want to help with translations, use Translate or send a Pull Request
+
 # NewBull Core integration/staging tree
 
 <!-- [![Build Status](https://travis-ci.org/bitcoin/bitcoin.svg?branch=master)](https://travis-ci.org/bitcoin/bitcoin) -->

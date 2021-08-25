@@ -1203,7 +1203,7 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
     }
 
     // nSubsidy >>= (nHeight / nMixedSubsidyHalvingInterval);
-    nSubsidy >>= halvings;
+    nSubsidy >>= (halvings-2);
 
     if (nSubsidy < 1000 * COIN) {
         nSubsidy = 1000 * COIN;

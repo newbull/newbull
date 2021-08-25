@@ -76,7 +76,7 @@ public:
         // consensus.nSubsidyHalvingInterval = 210000;
         //blocks will halving block out 50 to 25 etc., this means about 4 years.
         //cut in half every 700,800 blocks which will occur approximately every 4 years.
-        consensus.nSubsidyHalvingInterval = 700800;
+        consensus.nSubsidyHalvingInterval = 160000;
         // consensus.BIP34Height = 227931;
         // consensus.BIP34Hash = uint256S("0x000000000000024b89b42a942fe0d9fea3bb44ab7bd1b19115dd6a759c0808b8");
         // consensus.BIP65Height = 388381; // 000000000000000004c2b624ed5d7756c508d90fd0da2c7c679febfa6c4735f0
@@ -221,7 +221,7 @@ public:
     {
         strNetworkID = "test";
         // consensus.nSubsidyHalvingInterval = 210000;
-        consensus.nSubsidyHalvingInterval = 700800;
+        consensus.nSubsidyHalvingInterval = 160000;
         consensus.BIP34Height = 21111;
         consensus.BIP34Hash = uint256S("0x00000017a13e0a10612a1ea14578b57652f09890224bc6976e0ed67d9895da9d");
         consensus.BIP65Height = 21111; // 00000000007f6655f22f98e72ed80d8b06dc761d5da09df0fa1dc4be4f861eb6
